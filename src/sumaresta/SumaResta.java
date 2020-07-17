@@ -42,7 +42,7 @@ public class SumaResta extends Application {
         Text txt1 = new Text("Ingrese la operacion, Ej: 1+2+3");
         grid.add(txt1, 0, 0);
         
-        Text txt2 = new Text("Numero 1");
+        Text txt2 = new Text("Numero");
         grid.add(txt2, 0, 1);
         
         TextField text1 = new TextField();
@@ -62,8 +62,9 @@ public class SumaResta extends Application {
                 ScriptEngineManager mgr = new ScriptEngineManager();
                 ScriptEngine engine = mgr.getEngineByName("JavaScript");
                 String foo = numero1;
+                
                 try {
-                    txt3.setText("El resultado es:\nSuma Infija: " + numero1 + " = " + engine.eval(foo)+"\n Suma Prefija: "+ infixToPrefix(numero1) + " = " + engine.eval(foo));
+                    txt3.setText("El resultado es:\nSuma Infija: " + numero1 + " = " + engine.eval(foo)+"\nSuma Prefija: "+ infixToPrefix(numero1) + " = " + engine.eval(foo) + "\n Suma Postfija: "+infixToPostfix(numero1) + " = " + engine.eval(foo));
                 } catch (ScriptException ex) {
                     Logger.getLogger(SumaResta.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -88,6 +89,7 @@ public class SumaResta extends Application {
     
     
     
+    //prefix
     
     static boolean isOperator(char c) 
 { 
@@ -189,5 +191,82 @@ static String infixToPrefix(String infix)
   
     return operands.peek(); 
 }
+
+
+//postfix
+
+static int Prec(char ch) 
+    { 
+        switch (ch) 
+        { 
+        case '+': 
+        case '-': 
+            return 1; 
+       
+        case '*': 
+        case '/': 
+            return 2; 
+       
+        case '^': 
+            return 3; 
+        } 
+        return -1; 
+    } 
+       
+    // The main method that converts given infix expression 
+    // to postfix expression.  
+    static String infixToPostfix(String exp) 
+    { 
+        // initializing empty String for result 
+        String result = new String(""); 
+          
+        // initializing empty stack 
+        Stack<Character> stack = new Stack<>(); 
+          
+        for (int i = 0; i<exp.length(); ++i) 
+        { 
+            char c = exp.charAt(i); 
+              
+             // If the scanned character is an operand, add it to output. 
+            if (Character.isLetterOrDigit(c)) 
+                result += c; 
+               
+            // If the scanned character is an '(', push it to the stack. 
+            else if (c == '(') 
+                stack.push(c); 
+              
+            //  If the scanned character is an ')', pop and output from the stack  
+            // until an '(' is encountered. 
+            else if (c == ')') 
+            { 
+                while (!stack.isEmpty() && stack.peek() != '(') 
+                    result += stack.pop(); 
+                  
+                if (!stack.isEmpty() && stack.peek() != '(') 
+                    return "Invalid Expression"; // invalid expression                 
+                else
+                    stack.pop(); 
+            } 
+            else // an operator is encountered 
+            { 
+                while (!stack.isEmpty() && Prec(c) <= Prec(stack.peek())){ 
+                    if(stack.peek() == '(') 
+                        return "Invalid Expression"; 
+                    result += stack.pop(); 
+             } 
+                stack.push(c); 
+            } 
+       
+        } 
+       
+        // pop all the operators from the stack 
+        while (!stack.isEmpty()){ 
+            if(stack.peek() == '(') 
+                return "Invalid Expression"; 
+            result += stack.pop(); 
+         } 
+        return result; 
+    } 
+    
 
 }
