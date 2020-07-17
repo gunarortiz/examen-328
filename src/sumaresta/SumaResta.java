@@ -64,7 +64,7 @@ public class SumaResta extends Application {
                 String foo = numero1;
                 
                 try {
-                    txt3.setText("El resultado es:\nSuma Infija: " + numero1 + " = " + engine.eval(foo)+"\nSuma Prefija: "+ infixToPrefix(numero1) + " = " + engine.eval(foo) + "\n Suma Postfija: "+infixToPostfix(numero1) + " = " + engine.eval(foo));
+                    txt3.setText("El resultado es:\nSuma Infija: " + numero1 + " = " + engine.eval(foo)+"\nSuma Prefija: "+ infixToPrefix(numero1) + " = " + engine.eval(foo) + "\nSuma Postfija: "+infixToPostfix(numero1) + " = " + engine.eval(foo));
                 } catch (ScriptException ex) {
                     Logger.getLogger(SumaResta.class.getName()).log(Level.SEVERE, null, ex);
                 }
